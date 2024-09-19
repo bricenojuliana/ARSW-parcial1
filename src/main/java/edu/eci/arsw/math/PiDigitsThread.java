@@ -5,10 +5,14 @@ public class PiDigitsThread extends Thread {
     private int count;
     private byte[] digits;
     private static boolean paused = false;
+    private boolean finished = false;
 
-    public PiDigitsThread(int start, int finish){
+    private Object lock;
+
+    public PiDigitsThread(int start, int finish, Object lock){
         this.start = start;
         this.count = finish - start + 1;
+        this.lock = lock;
     }
     @Override
     public void run() {
@@ -16,7 +20,20 @@ public class PiDigitsThread extends Thread {
     }
 
     private void calculatePiDigits() {
-        digits = PiDigits.getDigits(start, count);
+        synchronized (lock){
+            if (paused){
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            digits = PiDigits.getDigits(start, count);
+            finished = true;
+        }
+
+
+
     }
 
     public byte[] getDigits() {

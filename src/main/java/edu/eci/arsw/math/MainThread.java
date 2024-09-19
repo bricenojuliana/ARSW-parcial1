@@ -5,24 +5,28 @@ import java.util.ArrayList;
 public class MainThread {
     private int n;
     private ArrayList<PiDigitsThread> threads;
+    private Object lock;
 
 
     public MainThread(int threads) {
         this.n = threads;
         this.threads = new ArrayList<>();
+        lock = new Object();
     }
 
     public byte[] getDigits(int start, int count){
+
         ArrayList<ArrayList<Integer>> ranges = new ArrayList<>();
         for (int i = 0; i < n; i++){
             ranges =  getRanges(start, count, n);
         }
 
         for (int i = 0; i < ranges.size(); i++){
-            PiDigitsThread thread = new PiDigitsThread(ranges.get(i).get(0), ranges.get(i).get(1));
+            PiDigitsThread thread = new PiDigitsThread(ranges.get(i).get(0), ranges.get(i).get(1), lock);
             thread.start();
             this.threads.add(thread);
         }
+
 
         for (PiDigitsThread t : threads){
             try {
