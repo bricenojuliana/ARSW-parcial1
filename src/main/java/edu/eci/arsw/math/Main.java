@@ -5,6 +5,7 @@
  */
 package edu.eci.arsw.math;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -13,35 +14,21 @@ import java.util.Arrays;
  */
 public class Main {
 
-    public static void main(String a[]) {
+    public static void main(String args[]) {
         System.out.println(bytesToHex(PiDigits.getDigits(0, 10)));
-//        String num1 = bytesToHex(PiDigits.getDigits(1, 100));
+        String num1 = bytesToHex(PiDigits.getDigits(1, 100));
         System.out.println(bytesToHex(PiDigits.getDigits(1, 100)));
 
-//        System.out.println(bytesToHex(PiDigits.getDigits(1, 1000000)));
+        MainThread mainThread = new MainThread(3);
+        String num2 = bytesToHex(PiDigits.getDigits(1, 100));
+        System.out.println(bytesToHex(mainThread.getDigits(1, 100)));
 
-        PiDigitsThread digit1 = new PiDigitsThread(1, 20);
-        PiDigitsThread digit2 = new PiDigitsThread(21, 80);
-        PiDigitsThread digit3 = new PiDigitsThread(81, 100);
+        System.out.println(num1.equals(num2));
 
-        digit1.start();
-        digit2.start();
-        digit3.start();
+        MainThread mainThread2 = new MainThread(100);
+        System.out.println(bytesToHex(mainThread2.getDigits(1, 1000000)));
 
-        try {
-            digit1.join();
-            digit2.join();
-            digit3.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.print(bytesToHex(digit1.getDigits()));
-        System.out.print(bytesToHex(digit2.getDigits()));
-        System.out.print(bytesToHex(digit3.getDigits()));
 
-//        String num2 = bytesToHex(digit1.getDigits()) + bytesToHex(digit2.getDigits()) + bytesToHex(digit3.getDigits());
-
-//        System.out.println(num1.equals(num2));
     }
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
@@ -60,5 +47,6 @@ public class Main {
         }
         return sb.toString();
     }
+
 
 }

@@ -4,6 +4,7 @@ public class PiDigitsThread extends Thread {
     private int start;
     private int count;
     private byte[] digits;
+    private static boolean paused = false;
 
     public PiDigitsThread(int start, int finish){
         this.start = start;
@@ -20,5 +21,9 @@ public class PiDigitsThread extends Thread {
 
     public byte[] getDigits() {
         return digits;
+    }
+
+    public static void setPaused(boolean paused) {
+        PiDigitsThread.paused = paused;
     }
 }
